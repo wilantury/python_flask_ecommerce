@@ -22,9 +22,9 @@
             {% for item in items %}
                 <tr>
                     <td>{{item['id']}}</td>
-                    <td>{{item.get('name')}}</td>
+                    <td>{{item.name}}</td>
                     <td>{{item.barcode}}</td>
-                    <td>$ {{item.get('price')}}</td>
+                    <td>$ {{item.price}}</td>
                     <td>
                         <button class="btn btn-outline btn-info">More info</button>
                         <button class="btn btn-outline btn-success">Purchase this item</button>
