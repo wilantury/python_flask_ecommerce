@@ -1,7 +1,7 @@
 # package
 from market import app, db
 # Flask
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 # Models
 from market.models import Item, User
 # Forms
@@ -30,7 +30,7 @@ def signup():
         return redirect(url_for('market_page'))
     if form.errors != {}:
         for err_msg in form.errors.values():
-            print(f'Error: {err_msg}')
+            flash(f'Error: {err_msg}', category='danger')
 
     return render_template('signup.html', form=form )
 
