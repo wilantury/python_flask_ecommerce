@@ -1,4 +1,3 @@
-from sqlalchemy.orm import backref
 from market import db
 
 class User(db.Model):
