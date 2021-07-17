@@ -7,7 +7,7 @@ from market.models import Item, User
 # Forms
 from market.forms import RegisterForm, LoginForm
 # third party
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 
 @app.route("/")
 @app.route("/home")
@@ -15,6 +15,7 @@ def home_page():
     return render_template('home.html')
 
 @app.route('/market')
+@login_required
 def market_page():
     items = Item.query.all()
     return render_template('market.html', items=items)
@@ -29,6 +30,8 @@ def signup():
                         password=form.password1.data)
         db.session.add(user_to_create)
         db.session.commit()
+        login_user(user_to_create)
+        flash(f'Account created succesfully! You are now logged in as {user_to_create.username}', category='success')
         return redirect(url_for('market_page'))
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -52,6 +55,12 @@ def login():
             
 
     return render_template('login.html', form=login_form)
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    flash("Yo have been logged out!", category='info')
+    return redirect(url_for('home_page'))
 
 @app.route("/about/<username>")
 def about_page(username):
