@@ -15,6 +15,9 @@ class User(db.Model, UserMixin):
     #retationship: We are able to get the owner of an item. This is not a Column
     items = db.relationship('Item', backref='owned_user', lazy=True)
 
+    def can_purchase(self, item_obj):
+        return self.budget >= item_obj.price
+
     @property
     def prettier_budget(self):
         if len(str(self.budget)) > 3:
@@ -46,3 +49,8 @@ class Item(db.Model):
 
     def __repr__(self) -> str:
         return f'Item {self.name}'
+
+    def buy(self, user):
+        self.owner = user.id
+        user.budget -= self.price
+        db.session.commit()
